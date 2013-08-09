@@ -17,9 +17,15 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     LSState *currentState = [self performSelector:@selector(state)];
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *eventName = NSStringFromSelector(_cmd);
+    
+    SEL canPerformEventQuery = NSSelectorFromString([NSString stringWithFormat:@"can%@", [eventName initialCapital]]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    BOOL canPerformEvent = [self performSelector:canPerformEventQuery withObject:nil];
+#pragma clang diagnostic pop
     LSTransition *transition = [sm transitionFrom:currentState.name forEvent:eventName];
-
-    if (transition) {
+    
+    if (transition && canPerformEvent) {
         LSState *fromState = [sm stateWithName:transition.from];
         LSState *toState = [sm stateWithName:transition.to];
         
