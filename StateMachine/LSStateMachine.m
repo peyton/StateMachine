@@ -47,7 +47,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     if (!(from && to)) return;
     
     LSEvent *event = [self eventWithName:eventName];
-    LSTransition *transition = [LSTransition transitionFrom:from to:to];
+    LSTransition *transition = [LSTransition transitionFrom:fromName to:toName];
     transition.condition = condition;
     if (!event) {
         event = [LSEvent eventWithName:eventName transitions:[NSSet setWithObject:transition]];
@@ -58,10 +58,11 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableEvents addObject:event];
 }
 
-- (LSTransition *)transitionFrom:(LSState *)from forEvent:(NSString *)eventName {
+- (LSTransition *)transitionFrom:(NSString *)fromName forEvent:(NSString *)eventName;
+{
     LSEvent *event = [self eventWithName:eventName];
     for (LSTransition *transition in event.transitions) {
-        if ([transition.from isEqual:from]) {
+        if ([transition.from isEqual:fromName]) {
             return transition;
         }
     }

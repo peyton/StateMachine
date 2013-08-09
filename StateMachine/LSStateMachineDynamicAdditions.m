@@ -17,7 +17,7 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     LSState *currentState = [self performSelector:@selector(state)];
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *eventName = NSStringFromSelector(_cmd);
-    LSTransition *transition = [sm transitionFrom:currentState forEvent:eventName];
+    LSTransition *transition = [sm transitionFrom:currentState.name forEvent:eventName];
 
     if (transition) {
         LSState *fromState = [sm stateWithName:transition.from];
@@ -32,7 +32,8 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
         for (void(^beforeCallback)(id) in beforeCallbacks) {
             beforeCallback(self);
         }
-        [self performSelector:@selector(setState:) withObject:transition.to];
+        
+        [self performSelector:@selector(setState:) withObject:toState];
         
         NSArray *afterCallbacks = event.afterCallbacks;
         for (LSStateMachineTransitionCallback afterCallback in afterCallbacks) {
@@ -67,7 +68,7 @@ BOOL LSStateMachineCheckCanTransition(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     LSState *currentState = [self performSelector:@selector(state)];
     NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] initialLowercase];
-    LSTransition *transition = [sm transitionFrom:currentState forEvent:query];
+    LSTransition *transition = [sm transitionFrom:currentState.name forEvent:query];
     return transition != nil && [transition meetsCondition:self];
 }
 

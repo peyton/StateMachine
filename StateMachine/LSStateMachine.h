@@ -22,6 +22,6 @@
 - (void)before:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback;
 - (void)after:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback;
 
-- (LSTransition *)transitionFrom:(LSState *)from forEvent:(NSString *)eventName;
+- (LSTransition *)transitionFrom:(NSString *)fromName forEvent:(NSString *)eventName;
 
 @end
