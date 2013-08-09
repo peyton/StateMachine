@@ -70,7 +70,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 }
 
 
-- (void)from:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
+- (void)fromState:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
 {
     LSState *oldState = [self stateWithName:stateName];
     [self.mutableStates removeObject:oldState];
@@ -78,7 +78,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableStates addObject:newState];
 }
 
-- (void)to:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
+- (void)toState:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
 {
     LSState *oldState = [self stateWithName:stateName];
     [self.mutableStates removeObject:oldState];
@@ -86,14 +86,14 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableStates addObject:newState];
 }
 
-- (void)before:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
+- (void)beforeEvent:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
     LSEvent *oldEvent = [self eventWithName:eventName];
     [self.mutableEvents removeObject:oldEvent];
     LSEvent *newEvent = [oldEvent addBeforeCallback:callback];
     [self.mutableEvents addObject:newEvent];
 }
 
-- (void)after:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
+- (void)afterEvent:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
     LSEvent *oldEvent = [self eventWithName:eventName];
     [self.mutableEvents removeObject:oldEvent];
     LSEvent *newEvent = [oldEvent addAfterCallback:callback];
