@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8D6F730316DC962D00A5A8F4 /* NSString+Capitalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6F730216DC962D00A5A8F4 /* NSString+Capitalize.m */; };
 		8DF481D617125AB600B4B5F9 /* NSString+CapitalizeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF481D517125AB600B4B5F9 /* NSString+CapitalizeSpec.m */; };
+		9CB922DE17B470A2008804BE /* LSState.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB922DD17B470A2008804BE /* LSState.m */; };
 		A001F2031630DB10002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
 		A001F2121630DB11002AEC31 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2111630DB11002AEC31 /* SenTestingKit.framework */; };
 		A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F2021630DB10002AEC31 /* Foundation.framework */; };
@@ -53,6 +54,8 @@
 		8D6F730116DC962D00A5A8F4 /* NSString+Capitalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Capitalize.h"; sourceTree = "<group>"; };
 		8D6F730216DC962D00A5A8F4 /* NSString+Capitalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Capitalize.m"; sourceTree = "<group>"; };
 		8DF481D517125AB600B4B5F9 /* NSString+CapitalizeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CapitalizeSpec.m"; sourceTree = "<group>"; };
+		9CB922DC17B470A2008804BE /* LSState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSState.h; sourceTree = "<group>"; };
+		9CB922DD17B470A2008804BE /* LSState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSState.m; sourceTree = "<group>"; };
 		A001F1FF1630DB10002AEC31 /* libStateMachine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStateMachine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A001F2021630DB10002AEC31 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A001F2061630DB10002AEC31 /* StateMachine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StateMachine-Prefix.pch"; sourceTree = "<group>"; };
@@ -137,6 +140,8 @@
 				A001F2051630DB10002AEC31 /* Supporting Files */,
 				A066CFEB163D84D00061797C /* LSStateMachine.h */,
 				A066CFEC163D84D00061797C /* LSStateMachine.m */,
+				9CB922DC17B470A2008804BE /* LSState.h */,
+				9CB922DD17B470A2008804BE /* LSState.m */,
 				A066CFF4163D90190061797C /* LSEvent.h */,
 				A066CFF5163D90190061797C /* LSEvent.m */,
 				A066CFF9163D941D0061797C /* LSTransition.h */,
@@ -294,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CB922DE17B470A2008804BE /* LSState.m in Sources */,
 				A066CFED163D84D00061797C /* LSStateMachine.m in Sources */,
 				A066CFF6163D90190061797C /* LSEvent.m in Sources */,
 				A066CFFB163D941D0061797C /* LSTransition.m in Sources */,

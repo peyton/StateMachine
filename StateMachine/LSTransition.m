@@ -1,10 +1,10 @@
 #import "LSTransition.h"
 
 @implementation LSTransition
-+ (id)transitionFrom:(NSString *)from to:(NSString *)to {
++ (id)transitionFrom:(LSState *)from to:(LSState *)to {
     return [[self alloc] initFrom:from to:to];
 }
-- (id)initFrom:(NSString *)from to:(NSString *)to {
+- (id)initFrom:(LSState *)from to:(LSState *)to {
     self = [super init];
     if (self) {
         _from = [from copy];
@@ -30,10 +30,10 @@
         return NO;
     }
     LSTransition *other = (LSTransition *)object;
-    if (![self.from isEqualToString:other.from]) {
+    if (![self.from isEqual:other.from]) {
         return NO;
     }
-    if (![self.to isEqualToString:other.to]) {
+    if (![self.to isEqual:other.to]) {
         return NO;
     }
     return YES;

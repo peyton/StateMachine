@@ -14,11 +14,16 @@ void LSStateMachineInitializeInstance(id self, SEL _cmd);
 
 // This is the implementation of all the event instance methods
 BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
-    NSString *currentState = [self performSelector:@selector(state)];
+    LSState *currentState = [self performSelector:@selector(state)];
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *eventName = NSStringFromSelector(_cmd);
     LSTransition *transition = [sm transitionFrom:currentState forEvent:eventName];
     if (transition) {
+        NSArray *fromCallbacks = transition.from.fromCallbacks;
+        for (void(^fromCallback)(id) in fromCallbacks) {
+            fromCallback(self);
+        }
+        
         LSEvent *event = [sm eventWithName:eventName];
         NSArray *beforeCallbacks = event.beforeCallbacks;
         for (void(^beforeCallback)(id) in beforeCallbacks) {
@@ -29,6 +34,11 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
         NSArray *afterCallbacks = event.afterCallbacks;
         for (LSStateMachineTransitionCallback afterCallback in afterCallbacks) {
             afterCallback(self);
+        }
+        
+        NSArray *toCallbacks = transition.to.toCallbacks;
+        for (void(^toCallback)(id) in toCallbacks) {
+            toCallback(self);
         }
         return YES;
     } else {
@@ -44,15 +54,15 @@ void LSStateMachineInitializeInstance(id self, SEL _cmd) {
 
 // This is the implementation of all the is<StateName> instance methods
 BOOL LSStateMachineCheckState(id self, SEL _cmd) {
-    NSString *currentState = [self performSelector:@selector(state)];
+    LSState *currentState = [self performSelector:@selector(state)];
     NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] initialLowercase];
-    return [query isEqualToString:currentState];
+    return [query isEqualToString:currentState.name];
 }
 
 // This is the implementation of all the can<EventName> instance methods
 BOOL LSStateMachineCheckCanTransition(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
-    NSString *currentState = [self performSelector:@selector(state)];
+    LSState *currentState = [self performSelector:@selector(state)];
     NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] initialLowercase];
     LSTransition *transition = [sm transitionFrom:currentState forEvent:query];
     return transition != nil && [transition meetsCondition:self];
@@ -68,8 +78,8 @@ void LSStateMachineInitializeClass(Class klass) {
         class_addMethod(klass, NSSelectorFromString(transitionQueryMethodName), (IMP) LSStateMachineCheckCanTransition, "i@:");
     }
     
-    for (NSString *state in sm.states) {
-        NSString *queryMethodName = [NSString stringWithFormat:@"is%@", [state initialCapital]];
+    for (LSState *state in sm.states) {
+        NSString *queryMethodName = [NSString stringWithFormat:@"is%@", [state.name initialCapital]];
         class_addMethod(klass, NSSelectorFromString(queryMethodName), (IMP) LSStateMachineCheckState, "i@:");
     }
     class_addMethod(klass, @selector(initializeStateMachine), (IMP) LSStateMachineInitializeInstance, "v@:");

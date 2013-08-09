@@ -22,18 +22,18 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     }
     return self;
 }
-- (void)addState:(NSString *)state {
+- (void)addState:(LSState *)state {
     [self.mutableStates addObject:state];
     if (!self.initialState) {
         self.initialState = state;
     }
 }
 
-- (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to; {
+- (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to; {
     [self when:eventName transitionFrom:from to:to if:nil];
 }
 
-- (void)when:(NSString *)eventName transitionFrom:(NSString *)from to:(NSString *)to if:(LSStateMachineTransitionCondition)condition; {
+- (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to if:(LSStateMachineTransitionCondition)condition; {
     LSEvent *event = [self eventWithName:eventName];
     LSTransition *transition = [LSTransition transitionFrom:from to:to];
     transition.condition = condition;
@@ -46,14 +46,31 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableEvents addObject:event];
 }
 
-- (LSTransition *)transitionFrom:(NSString *)from forEvent:(NSString *)eventName {
+- (LSTransition *)transitionFrom:(LSState *)from forEvent:(NSString *)eventName {
     LSEvent *event = [self eventWithName:eventName];
     for (LSTransition *transition in event.transitions) {
-        if ([transition.from isEqualToString:from]) {
+        if ([transition.from isEqual:from]) {
             return transition;
         }
     }
     return nil;
+}
+
+
+- (void)from:(LSState *)state do:(LSStateMachineTransitionCallback)callback;
+{
+    LSState *oldState = [self stateWithName:state.name];
+    [self.mutableStates removeObject:oldState];
+    LSState *newState = [oldState addFromCallback:callback];
+    [self.mutableStates addObject:newState];
+}
+
+- (void)to:(LSState *)state do:(LSStateMachineTransitionCallback)callback;
+{
+    LSState *oldState = [self stateWithName:state.name];
+    [self.mutableStates removeObject:oldState];
+    LSState *newState = [oldState addToCallback:callback];
+    [self.mutableStates addObject:newState];
 }
 
 - (void)before:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
@@ -78,11 +95,19 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     return [NSSet setWithSet:self.mutableEvents];
 }
 
-- (void)setInitialState:(NSString *)defaultState {
+- (void)setInitialState:(LSState *)defaultState {
     [self willChangeValueForKey:@"initialState"];
     _initialState = defaultState;
     [self.mutableStates addObject:defaultState];
     [self didChangeValueForKey:@"initialState"];
+}
+
+- (LSState *)stateWithName:(NSString *)name;
+{
+    for (LSState *state in self.states)
+        if ([state.name isEqualToString:name])
+            return state;
+    return nil;
 }
 
 - (LSEvent *)eventWithName:(NSString *)name {
