@@ -24,4 +24,6 @@
 
 - (LSTransition *)transitionFrom:(NSString *)fromName forEvent:(NSString *)eventName;
 
+@property (nonatomic, assign) BOOL debug;
+
 @end

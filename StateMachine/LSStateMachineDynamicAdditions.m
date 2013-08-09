@@ -22,6 +22,12 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     if (transition) {
         LSState *fromState = [sm stateWithName:transition.from];
         LSState *toState = [sm stateWithName:transition.to];
+        
+        if (sm.debug)
+        {
+            NSLog(@"Transitioning from %@ to %@:\n%@\n%@", transition.from, transition.to, fromState, toState);
+        }
+        
         NSArray *fromCallbacks = fromState.fromCallbacks;
         for (void(^fromCallback)(id) in fromCallbacks) {
             fromCallback(self);
@@ -46,6 +52,11 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
         }
         return YES;
     } else {
+        if (sm.debug)
+        {
+            NSLog(@"No transition from %@ for event %@", currentState.name, eventName);
+        }
+        
         return NO;
     }
 }
