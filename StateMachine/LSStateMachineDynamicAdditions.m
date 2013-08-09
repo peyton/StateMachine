@@ -117,8 +117,8 @@ LSStateMachine * LSStateMachineSetDefinitionForClass(Class klass,void(^definitio
                                   sm,
                                   OBJC_ASSOCIATION_RETAIN
                                   );
-        definition(sm);
     }
+    [sm configureWithDefinition:definition forClass:klass];
     return sm;
     
 }

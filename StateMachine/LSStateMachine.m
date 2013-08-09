@@ -12,6 +12,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 @interface LSStateMachine ()
 @property (nonatomic, strong) NSMutableSet *mutableStates;
 @property (nonatomic, strong) NSMutableSet *mutableEvents;
+@property (nonatomic, strong) NSMutableSet *configuredClasses;
 @end
 @implementation LSStateMachine
 - (id)init {
@@ -19,8 +20,18 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     if (self) {
         _mutableStates = [[NSMutableSet alloc] init];
         _mutableEvents = [[NSMutableSet alloc] init];
+        _configuredClasses = [[NSMutableSet alloc] init];
     }
     return self;
+}
+
+- (void)configureWithDefinition:(void(^)(LSStateMachine *))definition forClass:(Class)klass;
+{
+    if (![self.configuredClasses containsObject:klass])
+    {
+        [self.configuredClasses addObject:klass];
+        definition(self);
+    }
 }
 
 #pragma mark - State creation

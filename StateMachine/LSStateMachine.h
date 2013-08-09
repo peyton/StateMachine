@@ -10,6 +10,9 @@
 @property (nonatomic, strong, readonly) NSSet *events;
 @property (nonatomic, strong) LSState *initialState;
 
+/* Configuration */
+- (void)configureWithDefinition:(void(^)(LSStateMachine *))definition forClass:(Class)klass;
+
 /* State creation */
 - (void)initializeWithState:(NSString *)stateName;
 - (void)addState:(NSString *)stateName;
