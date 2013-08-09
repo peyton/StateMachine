@@ -72,4 +72,8 @@
     return result;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ named '%@'.\nfromCallbacks: %@\ntoCallbacks: %@", [self class], self.name, self.fromCallbacks, self.toCallbacks];
+}
+
 @end
