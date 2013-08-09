@@ -30,7 +30,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     }
 }
 
-- (void)setInitialStateName:(NSString *)stateName;
+- (void)initializeWithState:(NSString *)stateName;
 {
     LSState *state = [LSState stateWithName:stateName];
     self.initialState = state;

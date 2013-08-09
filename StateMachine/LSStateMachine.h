@@ -9,7 +9,7 @@
 @property (nonatomic, strong, readonly) NSSet *states;
 @property (nonatomic, strong, readonly) NSSet *events;
 @property (nonatomic, strong) LSState *initialState;
-- (void)setInitialStateName:(NSString *)stateName;
+- (void)initializeWithState:(NSString *)stateName;
 - (void)addState:(NSString *)stateName;
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName;
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName if:(LSStateMachineTransitionCondition)condition;
