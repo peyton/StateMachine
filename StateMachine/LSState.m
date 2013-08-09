@@ -22,6 +22,8 @@
         return nil;
     
     _name = [name copy];
+    _fromCallbacks = @[];
+    _toCallbacks = @[];
     
     return self;
 }
@@ -35,8 +37,8 @@
     if (!(self = [self initWithName:name]))
         return nil;
     
-    _fromCallbacks = [fromCallbacks copy];
-    _toCallbacks = [toCallbacks copy];
+    _fromCallbacks = (fromCallbacks) ? [fromCallbacks copy] : @[];;
+    _toCallbacks = (toCallbacks) ? [toCallbacks copy] : @[];
     
     return self;
 }
