@@ -6,7 +6,7 @@
 + (id)transitionFrom:(LSState *)from to:(LSState *)to;
 - (id)initFrom:(LSState *)from to:(LSState *)to;
 - (BOOL)meetsCondition:(id)obj;
-@property (nonatomic, copy, readonly) LSState *from;
-@property (nonatomic, copy, readonly) LSState *to;
+@property (nonatomic, strong, readonly) LSState *from;
+@property (nonatomic, strong, readonly) LSState *to;
 @property (nonatomic, copy) LSStateMachineTransitionCondition condition;
 @end

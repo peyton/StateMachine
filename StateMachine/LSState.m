@@ -36,7 +36,7 @@
         return nil;
     
     _fromCallbacks = [fromCallbacks copy];
-    _toCallbacks = toCallbacks;
+    _toCallbacks = [toCallbacks copy];
     
     return self;
 }

@@ -7,8 +7,8 @@
 - (id)initFrom:(LSState *)from to:(LSState *)to {
     self = [super init];
     if (self) {
-        _from = [from copy];
-        _to = [to copy];
+        _from = from;
+        _to = to;
     }
     return self;
 }

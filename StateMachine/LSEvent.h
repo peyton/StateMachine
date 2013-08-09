@@ -5,9 +5,9 @@
 
 @interface LSEvent : NSObject
 @property (nonatomic, copy, readonly) NSString *name;
-@property (nonatomic, strong, readonly) NSSet *transitions;
-@property (nonatomic, strong, readonly) NSArray *beforeCallbacks;
-@property (nonatomic, strong, readonly) NSArray *afterCallbacks;
+@property (nonatomic, copy, readonly) NSSet *transitions;
+@property (nonatomic, copy, readonly) NSArray *beforeCallbacks;
+@property (nonatomic, copy, readonly) NSArray *afterCallbacks;
 
 + (id)eventWithName:(NSString *)name transitions:(NSSet *)transitions;
 - (id)initWithName:(NSString *)name transitions:(NSSet *)transitions;

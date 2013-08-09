@@ -23,9 +23,9 @@
     self = [super init];
     if (self) {
         _name = [name copy];
-        _transitions = (transitions) ? transitions : [[NSSet alloc] init];
-        _beforeCallbacks = (beforeCallbacks) ? beforeCallbacks : @[];
-        _afterCallbacks = (afterCallbacks) ? afterCallbacks : @[];
+        _transitions = (transitions) ? [transitions copy] : [[NSSet alloc] init];
+        _beforeCallbacks = (beforeCallbacks) ? [beforeCallbacks copy] : @[];
+        _afterCallbacks = (afterCallbacks) ? [afterCallbacks copy] : @[];
     }
     return self;
 }
