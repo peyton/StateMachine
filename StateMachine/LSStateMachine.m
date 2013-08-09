@@ -22,11 +22,18 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     }
     return self;
 }
-- (void)addState:(LSState *)state {
+- (void)addState:(NSString *)stateName {
+    LSState *state = [LSState stateWithName:stateName];
     [self.mutableStates addObject:state];
     if (!self.initialState) {
         self.initialState = state;
     }
+}
+
+- (void)setInitialStateName:(NSString *)stateName;
+{
+    LSState *state = [LSState stateWithName:stateName];
+    self.initialState = state;
 }
 
 - (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to; {
@@ -57,17 +64,17 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
 }
 
 
-- (void)from:(LSState *)state do:(LSStateMachineTransitionCallback)callback;
+- (void)from:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
 {
-    LSState *oldState = [self stateWithName:state.name];
+    LSState *oldState = [self stateWithName:stateName];
     [self.mutableStates removeObject:oldState];
     LSState *newState = [oldState addFromCallback:callback];
     [self.mutableStates addObject:newState];
 }
 
-- (void)to:(LSState *)state do:(LSStateMachineTransitionCallback)callback;
+- (void)to:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
 {
-    LSState *oldState = [self stateWithName:state.name];
+    LSState *oldState = [self stateWithName:stateName];
     [self.mutableStates removeObject:oldState];
     LSState *newState = [oldState addToCallback:callback];
     [self.mutableStates addObject:newState];

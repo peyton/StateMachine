@@ -17,7 +17,6 @@
 @property (nonatomic, copy, readonly) NSArray *fromCallbacks;
 @property (nonatomic, copy, readonly) NSArray *toCallbacks;
 
-+ (instancetype)stateWithSelector:(SEL)selector;
 + (instancetype)stateWithName:(NSString *)name;
 - (id)initWithName:(NSString *)name;
 
@@ -28,5 +27,3 @@
 - (instancetype)addToCallback:(LSStateMachineTransitionCallback)toCallback;
 
 @end
-
-#define state(name) try{} @finally([LSState stateWithSelector:@selector([NSString stringWithFormat:@"is%@", [@name initialCapital]])])

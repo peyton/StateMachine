@@ -12,11 +12,6 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)stateWithSelector:(SEL)selector;
-{
-    return [self stateWithName:[NSStringFromSelector(selector) substringFromIndex:1]];
-}
-
 + (instancetype)stateWithName:(NSString *)name;
 {
     return [[self alloc] initWithName:name];
