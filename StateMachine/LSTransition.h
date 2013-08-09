@@ -3,10 +3,10 @@
 #import "LSState.h"
 
 @interface LSTransition : NSObject
-+ (id)transitionFrom:(LSState *)from to:(LSState *)to;
-- (id)initFrom:(LSState *)from to:(LSState *)to;
++ (instancetype)transitionFrom:(NSString *)fromName to:(NSString *)toName;
+- (id)initFrom:(NSString *)fromName to:(NSString *)toName;
 - (BOOL)meetsCondition:(id)obj;
-@property (nonatomic, strong, readonly) LSState *from;
-@property (nonatomic, strong, readonly) LSState *to;
+@property (nonatomic, copy, readonly) NSString *from;
+@property (nonatomic, copy, readonly) NSString *to;
 @property (nonatomic, copy) LSStateMachineTransitionCondition condition;
 @end

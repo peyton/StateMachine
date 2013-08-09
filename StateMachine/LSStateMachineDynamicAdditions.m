@@ -18,8 +18,11 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *eventName = NSStringFromSelector(_cmd);
     LSTransition *transition = [sm transitionFrom:currentState forEvent:eventName];
+
     if (transition) {
-        NSArray *fromCallbacks = transition.from.fromCallbacks;
+        LSState *fromState = [sm stateWithName:transition.from];
+        LSState *toState = [sm stateWithName:transition.to];
+        NSArray *fromCallbacks = fromState.fromCallbacks;
         for (void(^fromCallback)(id) in fromCallbacks) {
             fromCallback(self);
         }
@@ -36,7 +39,7 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
             afterCallback(self);
         }
         
-        NSArray *toCallbacks = transition.to.toCallbacks;
+        NSArray *toCallbacks = toState.toCallbacks;
         for (void(^toCallback)(id) in toCallbacks) {
             toCallback(self);
         }
