@@ -22,6 +22,9 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     }
     return self;
 }
+
+#pragma mark - State creation
+
 - (void)addState:(NSString *)stateName {
     LSState *state = [LSState stateWithName:stateName];
     [self.mutableStates addObject:state];
@@ -35,6 +38,8 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     LSState *state = [LSState stateWithName:stateName];
     self.initialState = state;
 }
+
+#pragma mark - Event creation
 
 - (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName;
 {
@@ -58,17 +63,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableEvents addObject:event];
 }
 
-- (LSTransition *)transitionFrom:(NSString *)fromName forEvent:(NSString *)eventName;
-{
-    LSEvent *event = [self eventWithName:eventName];
-    for (LSTransition *transition in event.transitions) {
-        if ([transition.from isEqual:fromName]) {
-            return transition;
-        }
-    }
-    return nil;
-}
-
+#pragma mark - State callbacks
 
 - (void)fromState:(NSString *)stateName do:(LSStateMachineTransitionCallback)callback;
 {
@@ -86,6 +81,8 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     [self.mutableStates addObject:newState];
 }
 
+#pragma mark - Event callbacks
+
 - (void)beforeEvent:(NSString *)eventName do:(LSStateMachineTransitionCallback)callback {
     LSEvent *oldEvent = [self eventWithName:eventName];
     [self.mutableEvents removeObject:oldEvent];
@@ -99,6 +96,34 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     LSEvent *newEvent = [oldEvent addAfterCallback:callback];
     [self.mutableEvents addObject:newEvent];
 }
+
+#pragma mark - Collection convenience
+
+- (void)fromStates:(NSArray *)stateNames do:(LSStateMachineTransitionCallback)callback;
+{
+    for (NSString *stateName in stateNames)
+        [self fromState:stateName do:callback];
+}
+
+- (void)toStates:(NSArray *)stateNames do:(LSStateMachineTransitionCallback)callback;
+{
+    for (NSString *stateName in stateNames)
+        [self toState:stateName do:callback];
+}
+
+- (void)beforeEvents:(NSArray *)eventNames do:(LSStateMachineTransitionCallback)callback;
+{
+    for (NSString *eventName in eventNames)
+        [self beforeEvent:eventName do:callback];
+}
+
+- (void)afterEvents:(NSArray *)eventNames do:(LSStateMachineTransitionCallback)callback;
+{
+    for (NSString *eventName in eventNames)
+        [self afterEvent:eventName do:callback];
+}
+
+#pragma mark - Getters and setters
 
 - (NSSet *)states {
     return [NSSet setWithSet:self.mutableStates];
@@ -127,6 +152,17 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     for (LSEvent *event in self.events) {
         if ([event.name isEqualToString:name])
             return event;
+    }
+    return nil;
+}
+
+- (LSTransition *)transitionFrom:(NSString *)fromName forEvent:(NSString *)eventName;
+{
+    LSEvent *event = [self eventWithName:eventName];
+    for (LSTransition *transition in event.transitions) {
+        if ([transition.from isEqual:fromName]) {
+            return transition;
+        }
     }
     return nil;
 }
