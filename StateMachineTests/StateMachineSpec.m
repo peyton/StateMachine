@@ -40,11 +40,11 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     [sm when:@"terminate" transitionFrom:@"active"            to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended"         to:@"terminated"];
     
-    [sm before:@"terminate" do:^(Subscription *subscription){
+    [sm beforeEvent:@"terminate" do:^(Subscription *subscription){
         subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
     }];
     
-    [sm after:@"suspend" do:^(Subscription *subscription) {
+    [sm afterEvent:@"suspend" do:^(Subscription *subscription) {
         [subscription stopBilling];
     }];
 });

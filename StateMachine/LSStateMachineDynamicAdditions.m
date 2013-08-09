@@ -3,6 +3,7 @@
 #import "LSStateMachineDynamicAdditions.h"
 #import "LSStateMachine.h"
 #import "LSEvent.h"
+#import "LSTransition.h"
 
 #import <objc/runtime.h>
 
@@ -16,14 +17,14 @@ BOOL LSStateMachineTriggerEvent(id self, SEL _cmd) {
     NSString *currentState = [self performSelector:@selector(state)];
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *eventName = NSStringFromSelector(_cmd);
-    NSString *nextState = [sm nextStateFrom:currentState forEvent:eventName];
-    if (nextState) {
+    LSTransition *transition = [sm transitionFrom:currentState forEvent:eventName];
+    if (transition) {
         LSEvent *event = [sm eventWithName:eventName];
         NSArray *beforeCallbacks = event.beforeCallbacks;
         for (void(^beforeCallback)(id) in beforeCallbacks) {
             beforeCallback(self);
         }
-        [self performSelector:@selector(setState:) withObject:nextState];
+        [self performSelector:@selector(setState:) withObject:transition.to];
         
         NSArray *afterCallbacks = event.afterCallbacks;
         for (LSStateMachineTransitionCallback afterCallback in afterCallbacks) {
@@ -53,8 +54,8 @@ BOOL LSStateMachineCheckCanTransition(id self, SEL _cmd) {
     LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
     NSString *currentState = [self performSelector:@selector(state)];
     NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] initialLowercase];
-    NSString *nextState = [sm nextStateFrom:currentState forEvent:query];
-    return nextState != nil;
+    LSTransition *transition = [sm transitionFrom:currentState forEvent:query];
+    return transition != nil && [transition meetsCondition:self];
 }
 
 // This is called in the initilize class method in the STATE_MACHINE macro

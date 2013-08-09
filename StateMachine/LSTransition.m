@@ -13,13 +13,13 @@
     return self;
 }
 
-- (BOOL)checkCondition
+- (BOOL)meetsCondition:(id)obj;
 {
     if (!self.condition)
     {
         return YES;
     }
-    return self.condition(self);
+    return self.condition(obj);
 }
 
 - (BOOL)isEqual:(id)object {
