@@ -36,11 +36,16 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     self.initialState = state;
 }
 
-- (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to; {
-    [self when:eventName transitionFrom:from to:to if:nil];
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName;
+{
+    [self when:eventName transitionFrom:fromName to:toName if:nil];
 }
 
-- (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to if:(LSStateMachineTransitionCondition)condition; {
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName if:(LSStateMachineTransitionCondition)condition; {
+    LSState *from = [self stateWithName:fromName];
+    LSState *to = [self stateWithName:toName];
+    if (!(from && to)) return;
+    
     LSEvent *event = [self eventWithName:eventName];
     LSTransition *transition = [LSTransition transitionFrom:from to:to];
     transition.condition = condition;

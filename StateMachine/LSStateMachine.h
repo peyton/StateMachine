@@ -11,8 +11,8 @@
 @property (nonatomic, strong) LSState *initialState;
 - (void)setInitialStateName:(NSString *)stateName;
 - (void)addState:(NSString *)stateName;
-- (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to;
-- (void)when:(NSString *)eventName transitionFrom:(LSState *)from to:(LSState *)to if:(LSStateMachineTransitionCondition)condition;
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName;
+- (void)when:(NSString *)eventName transitionFrom:(NSString *)fromName to:(NSString *)toName if:(LSStateMachineTransitionCondition)condition;
 - (LSState *)stateWithName:(NSString *)name;
 - (LSEvent *)eventWithName:(NSString *)name;
 
